@@ -2,14 +2,17 @@
 #include "cstring"
 #include "memory"
 
+#include "iostream"
+
 MIU::MIU()
 {
     m_size = -1;
 }
 
-MIU::MIU(char *data)
+MIU::MIU(const char *data)
 {
     m_size = strlen(data);
+    m_data = (char *)malloc(m_size);
     strcpy(m_data, data);
 }
 
@@ -36,7 +39,8 @@ bool MIU::canApplyRule(const Rules rule, int *fromp)
         {
             if (m_data[i] == 'I' && m_data[i + 1] == 'I' && m_data[i + 2] == 'I')
             {
-                *fromp = i + 1;
+                if (fromp)
+                    *fromp = i;
                 return true;
             }
         }
@@ -49,7 +53,8 @@ bool MIU::canApplyRule(const Rules rule, int *fromp)
         {
             if (m_data[i] == 'U' && m_data[i + 1] == 'U')
             {
-                *fromp = i + 1;
+                if (fromp)
+                    *fromp = i;
                 return true;
             }
         }
@@ -60,7 +65,8 @@ bool MIU::canApplyRule(const Rules rule, int *fromp)
 
 MIU MIU::applyRule(const Rules rule, int *fromp)
 {
-    if (!canApplyRule(rule, fromp))
+    int from = fromp ? *fromp : 0;
+    if (!canApplyRule(rule, &from))
         return MIU();
 
     switch (rule)
@@ -92,39 +98,39 @@ MIU MIU::applyRule(const Rules rule, int *fromp)
     {
         char *newdata = (char *)malloc(m_size);
         strcpy(newdata, m_data);
-        newdata[*fromp] = 'U';
-        for (int i = *fromp + 1; i < m_size - 2; i++)
+        newdata[from] = 'U';
+        for (int i = from + 1; i < m_size - 2; i++)
         {
             newdata[i] = m_data[i + 2];
         }
         newdata[m_size - 2] = 0;
 
         auto elem = MIU(newdata);
-        delete newdata;
+        free(newdata);
         return elem;
     }
     case Rules::IV:
     {
         char *newdata = (char *)malloc(m_size);
         strcpy(newdata, m_data);
-        for (int i = *fromp; i < m_size - 2; i++)
+        for (int i = from; i < m_size - 2; i++)
         {
             newdata[i] = m_data[i + 2];
         }
         newdata[m_size - 2] = 0;
 
         auto elem = MIU(newdata);
-        delete newdata;
+        free(newdata);
         return elem;
     }
     }
 }
 
-bool MIU::checkData(char *data)
+bool MIU::checkData(const char *data)
 {
     if (m_size == -1)
         return false;
-    return strcmp(data, m_data);
+    return strcmp(data, m_data) == 0;
 }
 
 bool MIU::isValid()

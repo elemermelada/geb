@@ -12,10 +12,10 @@ class MIU
 {
 public:
     MIU();
-    MIU(char *data);
+    MIU(const char *data);
     bool canApplyRule(const Rules rule, int *from = nullptr);
     MIU applyRule(const Rules rule, int *from = nullptr);
-    bool checkData(char *data);
+    bool checkData(const char *data);
     bool isValid();
 
 private:

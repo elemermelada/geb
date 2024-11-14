@@ -1,32 +1,35 @@
 #include "MIU.h"
+#include "iostream"
+#include "string"
 
-bool testRuleIII()
+void testRuleIII()
 {
-    auto s1 = MIU("MIII");
-    if (!s1.applyRule(Rules::III).checkData("M"))
+    auto s1 = MIU(std::string("MIII").c_str());
+    if (!s1.applyRule(Rules::III).checkData(std::string("MU").c_str()))
     {
-        throw "Rule III is not defined properly";
+        throw std::string("Rule III is not defined properly");
     }
 
-    s1 = MIU("MUIIIU");
-    if (!s1.applyRule(Rules::III).checkData("MUU"))
+    s1 = MIU(std::string("MUIIIU").c_str());
+    if (!s1.applyRule(Rules::III).checkData(std::string("MUUU").c_str()))
     {
-        throw "Rule III is not defined properly";
+        throw std::string("Rule III is not defined properly");
     }
 
-    s1 = MIU("MIUIIIIUUI");
-    if (!s1.applyRule(Rules::III).checkData("MIUIUUI"))
+    s1 = MIU(std::string("MIUIIIIUUI").c_str());
+    if (!s1.applyRule(Rules::III).checkData(std::string("MIUUIUUI").c_str()))
     {
-        throw "Rule III is not defined properly";
+        throw std::string("Rule III is not defined properly");
     }
-    s1 = MIU("MIUUUI");
+
+    s1 = MIU(std::string("MIUUUI").c_str());
     if (s1.applyRule(Rules::III).isValid())
     {
-        throw "Rule III is not defined properly";
+        throw std::string("Rule III is not defined properly");
     }
 }
 
-bool testRuleIV()
+void testRuleIV()
 {
     auto s1 = MIU("MUU");
     if (!s1.applyRule(Rules::IV).checkData("M"))
@@ -47,7 +50,18 @@ bool testRuleIV()
     }
 }
 
-void main()
+bool runTests()
 {
-    testRuleIII();
+    try
+    {
+        testRuleIII();
+        testRuleIV();
+    }
+    catch (std::string err)
+    {
+        std::cout << "TESTS FAILED: " << err << std::endl;
+        return false;
+    }
+    std::cout << "ALL TESTS PASSED" << std::endl;
+    return true;
 }
