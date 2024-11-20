@@ -34,7 +34,7 @@ static void testRuleIII()
     {
         throw "Rule III is not defined properly";
     }
-    s1 = MIU("MUIIIUIIIU");
+
     index = 3;
     if (s1.applyRule(Rules::III, &index).checkData("MUIIIUU"))
     {
