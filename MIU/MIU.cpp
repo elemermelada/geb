@@ -6,7 +6,6 @@
 
 MIU::MIU()
 {
-    m_size = -1;
 }
 
 MIU::MIU(const char *data)
@@ -61,6 +60,7 @@ bool MIU::canApplyRule(const Rules rule, int *fromp)
         return false;
     }
     }
+    return false;
 }
 
 MIU MIU::applyRule(const Rules rule, int *fromp)
@@ -124,6 +124,7 @@ MIU MIU::applyRule(const Rules rule, int *fromp)
         return elem;
     }
     }
+    return MIU();
 }
 
 bool MIU::checkData(const char *data)
