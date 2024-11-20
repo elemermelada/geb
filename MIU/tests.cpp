@@ -2,34 +2,47 @@
 #include "iostream"
 #include "string"
 
-void testRuleIII()
+static void testRuleIII()
 {
-    auto s1 = MIU(std::string("MIII").c_str());
-    if (!s1.applyRule(Rules::III).checkData(std::string("MU").c_str()))
+    auto s1 = MIU("MIII");
+    if (!s1.applyRule(Rules::III).checkData("MU"))
     {
-        throw std::string("Rule III is not defined properly");
+        throw "Rule III is not defined properly";
     }
 
-    s1 = MIU(std::string("MUIIIU").c_str());
-    if (!s1.applyRule(Rules::III).checkData(std::string("MUUU").c_str()))
+    s1 = MIU("MUIIIU");
+    if (!s1.applyRule(Rules::III).checkData("MUUU"))
     {
-        throw std::string("Rule III is not defined properly");
+        throw "Rule III is not defined properly";
     }
 
-    s1 = MIU(std::string("MIUIIIIUUI").c_str());
-    if (!s1.applyRule(Rules::III).checkData(std::string("MIUUIUUI").c_str()))
+    s1 = MIU("MIUIIIIUUI");
+    if (!s1.applyRule(Rules::III).checkData("MIUUIUUI"))
     {
-        throw std::string("Rule III is not defined properly");
+        throw "Rule III is not defined properly";
     }
 
-    s1 = MIU(std::string("MIUUUI").c_str());
+    s1 = MIU("MIUUUI");
     if (s1.applyRule(Rules::III).isValid())
     {
-        throw std::string("Rule III is not defined properly");
+        throw "Rule III is not defined properly";
+    }
+
+    s1 = MIU("MUIIIUIIIU");
+    int index = 1;
+    if (s1.applyRule(Rules::III, &index).checkData("MUUIIIU"))
+    {
+        throw "Rule III is not defined properly";
+    }
+    s1 = MIU("MUIIIUIIIU");
+    index = 3;
+    if (s1.applyRule(Rules::III, &index).checkData("MUIIIUU"))
+    {
+        throw "Rule III is not defined properly";
     }
 }
 
-void testRuleIV()
+static void testRuleIV()
 {
     auto s1 = MIU("MUU");
     if (!s1.applyRule(Rules::IV).checkData("M"))
@@ -50,14 +63,14 @@ void testRuleIV()
     }
 }
 
-bool runTests()
+static bool runTests()
 {
     try
     {
         testRuleIII();
         testRuleIV();
     }
-    catch (std::string err)
+    catch (char *err)
     {
         std::cout << "TESTS FAILED: " << err << std::endl;
         return false;
