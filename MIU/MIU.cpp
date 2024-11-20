@@ -8,10 +8,41 @@ MIU::MIU()
 {
 }
 
+MIU::MIU(const MIU &from)
+{
+    copyFrom(from);
+}
+
 MIU::MIU(const char *data)
 {
+    setFromStr(data);
+}
+
+MIU &MIU::operator=(MIU from)
+{
+    copyFrom(from);
+    return *this;
+}
+
+MIU::~MIU()
+{
+    if (m_data)
+        free(m_data);
+    m_data = nullptr;
+}
+
+void MIU::copyFrom(const MIU &from)
+{
+    if (m_data)
+        free(m_data);
+    m_data = nullptr;
+    setFromStr(from.m_data);
+}
+
+void MIU::setFromStr(const char *data)
+{
     m_size = strlen(data);
-    m_data = (char *)malloc(m_size);
+    m_data = (char *)malloc(sizeof(m_data) * m_size);
     strcpy(m_data, data);
 }
 
